@@ -1,0 +1,11 @@
+#coding:utf-8
+import urllib2
+import urllib
+
+#得到缩略图的函数	
+def getPage(url):
+	html = urllib.urlopen(url)
+	output = html.read()
+	output = output.decode('gbk').encode('utf-8')
+	
+	return output	
