@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}湖州日报手机版{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+{% if page_data.title %}
+<h3>{{ page_data.title|safe }}</h3>
+{% else %}
+<h3>{{ page_data.stitle|safe }}</h3>
+{% endif %}
+</div>
+
+{% if page_data.img %}
+<div class="page-content">
+	{{ page_data.img|safe }}
+</div>
+<p>
+{% endif %}
+
+<div class="page-content">
+{{ page_data.content|safe }}
+</div>
+{% endblock %}

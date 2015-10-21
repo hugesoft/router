@@ -4,8 +4,11 @@
 {% block title %}湖州日报手机版{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-{{ page_data|safe }}
+
+{% for page_data in page_data %}
+<div class="page-content">
+	{{ page_data|safe }}
 </div>
+{% endfor %}
 
 {% endblock %}

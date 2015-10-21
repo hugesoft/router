@@ -3,9 +3,20 @@
 
 {% block title %}Flasky - index.html {% endblock %}
 
+{% block navbar %}
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+<div class="btn-group" role="group">
+<a href="/" class="btn btn-primary btn-sm active" role="button">往期</a>
+</div>
+<div class="btn-group" role="group">
+<a href="content" class="btn btn-primary btn-sm active" role="button">目录</a>
+</div>
+</div>
+{% endblock %}
+
 {% block page_content %}
 <div class="page-header">
-{{ page_data|striptags }}
+{{ page_data|safe }}
 </div>
 
 {% endblock %}
