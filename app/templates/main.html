@@ -3,8 +3,34 @@
 
 {% block title %}湖州日报手机版{% endblock %}
 
-{% block page_content %}
+navbar-dirbar{ height: 40px;opacity:0}
 
+{% block navbar %}
+
+<div class="btn-group btn-group-justified navbar-fixed-bottom" role="group" aria-label="...">
+
+  <div class="btn-group dropup" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      往期
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="#">test1</a></li>
+      <li><a href="#">test2</a></li>
+    </ul>
+  </div>
+  
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default">目录</button>
+  </div>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default">版面</button>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block page_content %}
 {% for page_data in page_data %}
 <div class="page-content">
 	{{ page_data|safe }}
