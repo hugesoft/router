@@ -16,16 +16,16 @@ navbar-dirbar{ height: 40px;opacity:0}
     </button>
     <ul class="dropdown-menu">
     {% for menu_data in menu_data %}
-    <li><a href={{ menu_data|safe }}>{{ menu_name  }}</a></li>
+    <li><a href={{ menu_data.url|safe }}>{{ menu_data.name  }}</a></li>
     {% endfor %}
     </ul>
   </div>
   
   <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default">目录</button>
+    <a href="/page/" class="btn btn-primary btn-lg active" role="button">目录</a>
   </div>
   <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default">版面</button>
+    <a href="/main/" class="btn btn-default active" role="button">版面</a>
   </div>
 
 </div>
