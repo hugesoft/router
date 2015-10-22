@@ -20,3 +20,11 @@ class Content():
 		self.auth = auth
 		self.date = date
 		self.img = img
+		
+#菜单的类		
+class Menu():
+	name = ''
+	url = ''
+	def __init__(self,name='',url=''):
+		self.name = name
+		self.url = url

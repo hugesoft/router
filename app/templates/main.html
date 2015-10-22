@@ -15,8 +15,9 @@ navbar-dirbar{ height: 40px;opacity:0}
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a href="#">test1</a></li>
-      <li><a href="#">test2</a></li>
+    {% for menu_data in menu_data %}
+    <li><a href={{ menu_data.url|safe }}>{{ menu_data.name  }}</a></li>
+    {% endfor %}
     </ul>
   </div>
   

@@ -5,11 +5,13 @@ import urllib2
 import urllib
 import re
 import time
+from datetime import datetime, timedelta
 
 from array import *
 
 from .import main
 from content import Content
+from content import Menu
 
 ####################################
 #默认的路由函数
@@ -32,7 +34,8 @@ def indexlist():
 	reload(sys)
 	sys.setdefaultencoding('utf8')
 	
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
+	curr_time = time.strftime('%Y-%m/%d')
+	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ curr_time + '/node_2.htm')
 		
 	data = getPageList(url)
 
@@ -46,7 +49,19 @@ def indexlist():
 		array_data.append(getpage(arr[i],i+1))
 		i=i+1
 		
-	return render_template('main.html', page_data = array_data)
+	#得到往期的时间
+	menudata = []
+	now = datetime.now()
+	i = 0
+	while(i < 7):
+		delta = timedelta(days=i)
+		n_days = now - delta
+		i = i + 1	
+		menudata.append(Menu(n_days.strftime('湖州日报 %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
+	
+	
+	return render_template('main.html', page_data = array_data, 
+	menu_data = menudata)
 	
 ####################################
 #内容页的路由

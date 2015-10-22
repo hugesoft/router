@@ -9,6 +9,7 @@ class Content():
 	auth = ''
 	date = ''
 	img = ''
+	web_title = ''
 	def __init__(self, title, content, web_title = '', 
 	img='', stitle='', stitle2='', auth='', date=''):
 		self.web_title = web_title
@@ -19,3 +20,11 @@ class Content():
 		self.auth = auth
 		self.date = date
 		self.img = img
+		
+	#菜单的类		
+	class Menu():
+		name = ''
+		url = ''
+		def __init__(self,name='',url=''):
+			self.name = name
+			self.url = url
