@@ -53,7 +53,7 @@ def indexlist():
 	menudata = []
 	now = datetime.now()
 	i = 0
-	while(i < 7):
+	while(i < 60):
 		delta = timedelta(days=i)
 		n_days = now - delta
 		i = i + 1	
@@ -61,7 +61,7 @@ def indexlist():
 	
 	
 	return render_template('main.html', page_data = array_data, 
-	menu_data = menudata)
+	menu_data = menudata, curr_page = '/page/?url='+url)
 	
 ####################################
 #内容页的路由
@@ -86,7 +86,7 @@ def pagelist():
 	
 	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
 	data = getPageList(url)
-
+	
 	arr = []	
 	i = 2
 	#得到内容页的url，用正则去改
@@ -185,8 +185,11 @@ def getpage(url,Map_id=1):
 	result = strinfo.sub('width=388px height=506px',result)
 	
 	#改map1
-	if Map_id != 1:
-		strinfo = re.compile('PagePicMap1')
-		result = strinfo.sub('PagePicMap'+str(Map_id),result)	
+	strinfo = re.compile('PagePicMap1')
+	result = strinfo.sub('PagePicMap'+str(Map_id),result)
 	
+	#改PagePicMap的
+	strinfo = re.compile('<img useMap=')
+	result = strinfo.sub('<img id=PagePicMap'+str(Map_id) +' useMap=',result)	
+		
 	return result
