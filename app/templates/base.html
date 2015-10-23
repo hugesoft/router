@@ -3,6 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block scripts %}
+
 {{ super() }}
 {{ moment.include_moment() }}
 {{ moment().lang('cn') }}
@@ -10,7 +11,7 @@
 
 {% block navbar %}
 {% endblock %}
-
+{% block body_attribs %}{% endblock %}
 {% block content %}
 <div class="container">
     {% for message in get_flashed_messages() %}

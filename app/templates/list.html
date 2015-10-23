@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7 ]> <html lang="zh-CN" class="ie6 ielt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="zh-CN" class="ie7 ielt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="zh-CN" class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="zh-CN"><!--<![endif]-->
+<head>
+    <meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>新闻_湖州在线</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" type="text/css" href="http://img.hz66.com/templates/hz66/css/news_common.css" />
+    <link rel="stylesheet" type="text/css" href="http://img.hz66.com/templates/hz66/css/news_news.css" />
+  
+</head>    
+
+<body>
+
+<div class="column clearfix">
+
+        <div id="category" class="m-t-20 clearfix">
+            <div class="hd">
+                <h3><a href="http://www.hz66.com/news/originality/net_original/">原创</a></h3> 
+			</div>
+			            
+<div class="tpList clearfix">
+	 <ul class="tpWrap">
+  	{% for page_data in page_data %}
+		<li><em>{{ page_data|safe }}</em></li>
+	{% endfor %}
+ 	</ul>
+
+</div>
+ </div>
+
+
+
+</body>
+</html>

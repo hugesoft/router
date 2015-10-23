@@ -29,12 +29,8 @@ navbar-dirbar{ height: 40px;opacity:0}
     </ul>
   </div>
   
-  <div class="btn-group" role="group">
-    <a href={{ curr_page }} class="btn btn-primary active" role="button">目录</a>
-  </div>
-  
   <div class="btn-group dropup" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       版面
       <span class="caret"></span>
     </button>
@@ -45,6 +41,9 @@ navbar-dirbar{ height: 40px;opacity:0}
     </ul>
   </div>
   
+   <div class="btn-group" role="group">
+    <a href={{ curr_page }} class="btn btn-default active" role="button">目录</a>
+  </div>
 </div>
 {% endblock %}
 

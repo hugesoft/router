@@ -97,7 +97,27 @@ def pagelist():
 
 	return render_template('pagelist.html', page_data = arr)
 
+####################################	
+#版面的路由	
+@main.route('/list/', methods=['GET', 'POST'])
+def itemslist():
+	import sys
+	reload(sys)
+	sys.setdefaultencoding('utf8')
+	
+	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
+	data = getPageList(url)
+	
+	arr = []	
+	i = 2
+	#得到内容页的url，用正则去改
+	newurl =  url[:url.rindex('/')]
+	for x in data:
+		arr.append('<a class='color' href=..?url=' + newurl + '/node_' + str(i) + '.htm>' + x + '</a>')
+		i = i+1
 
+	return render_template('list.html', page_data = arr)
+	
 
 ####################################
 #
@@ -189,7 +209,7 @@ def getpage(url,Map_id=1):
 	result = strinfo.sub('PagePicMap'+str(Map_id),result)
 	
 	#改PagePicMap的
-	strinfo = re.compile('img useMap=')
-	result = strinfo.sub('img id=PagePicMap'+str(Map_id) +' useMap=',result)	
+	strinfo = re.compile('<img useMap=')
+	result = strinfo.sub('<img id=PagePicMap'+str(Map_id) +' useMap=',result)	
 		
 	return result

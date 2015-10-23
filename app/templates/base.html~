@@ -1,8 +1,7 @@
-#coding:utf-8
 {% extends "bootstrap/base.html" %}
 
 {% block title %}{% endblock %}
-
+{% block styles %}{% endblock %}
 {% block scripts %}
 {{ super() }}
 {{ moment.include_moment() }}
@@ -11,7 +10,7 @@
 
 {% block navbar %}
 {% endblock %}
-
+{% block body_attribs %}{% endblock %}
 {% block content %}
 <div class="container">
     {% for message in get_flashed_messages() %}
