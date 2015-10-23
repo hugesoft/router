@@ -28,3 +28,13 @@ class Menu():
 	def __init__(self,name='',url=''):
 		self.name = name
 		self.url = url
+		
+#目录的类		
+class ItemList():
+	item_type = 0
+	title = ''
+	url = ''
+	def __init__(self,item_type,title='',url=''):
+		self.title = title
+		self.url = url		
+		self.item_type = item_type

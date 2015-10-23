@@ -12,6 +12,7 @@ from array import *
 from .import main
 from content import Content
 from content import Menu
+from content import ItemList
 
 ####################################
 #默认的路由函数
@@ -50,18 +51,9 @@ def indexlist():
 		i=i+1
 		
 	#得到往期的时间
-	menudata = []
-	now = datetime.now()
-	i = 0
-	while(i < 60):
-		delta = timedelta(days=i)
-		n_days = now - delta
-		i = i + 1	
-		menudata.append(Menu(n_days.strftime('湖州日报 %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
-	
-	
-	return render_template('main.html', page_data = array_data, 
-	menu_data = menudata, curr_page = '/page/?url='+url)
+	menu_data = getpagetime(60)
+		
+	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page = '/list/?url='+url)
 	
 ####################################
 #内容页的路由
@@ -108,15 +100,23 @@ def itemslist():
 	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
 	data = getPageList(url)
 	
-	arr = []	
+	arr = []
 	i = 2
 	#得到内容页的url，用正则去改
-	newurl =  url[:url.rindex('/')]
+	spliurl =  url[:url.rindex('/')]
 	for x in data:
-		arr.append('<a class='color' href=..?url=' + newurl + '/node_' + str(i) + '.htm>' + x + '</a>')
+		newurl = spliurl + '/node_' + str(i) + '.htm'
+		arr.append(ItemList(1,x,'/main/?url='+newurl+'#PagePicMap'+str(i-1)))
+		item = getItemList(newurl)	
+		for y in range(0, len(item[0])):
+			arr.append(ItemList(0,item[0][y],
+			'/content/?url=http://ehzrb.hz66.com/hzrb/'+item[1][y]))	
 		i = i+1
-
-	return render_template('list.html', page_data = arr)
+		
+	#得到往期的时间
+	menu_data = getpagetime(60)
+	
+	return render_template('pagelist.html', page_data = arr, menu_data = menu_data, curr_page = url)
 	
 
 ####################################
@@ -125,9 +125,22 @@ def itemslist():
 #
 ####################################
 
+####################################
+#得到往期的时间
+def getpagetime(days):
+	menudata = []
+	now = datetime.now()
+	i = 0
+	while(i < 60):
+		delta = timedelta(days=i)
+		n_days = now - delta
+		i = i + 1	
+		menudata.append(Menu(n_days.strftime('湖州日报 %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
+	
+	return menudata
 
 ####################################
-#得到版面列表的函数
+#得到目录列表的函数
 def getPageList(url):
 	html = urllib.urlopen(url)
 	output = html.read()
@@ -139,9 +152,22 @@ def getPageList(url):
 		restr = re.findall('title=\'(.*?)\'>A0\d',restr[0])
 		
 	return restr
-	
-	
-		
+
+####################################
+#得到版面列表的函数
+def getItemList(url):
+	html = urllib.urlopen(url)
+	output = html.read()
+	output = output.decode('gbk').encode('utf-8')
+
+	#得到url
+	restr = re.findall('<td valign="top" class="right_bg02"><div class="list">([\s\S]*) <!--Left End-->',output)
+	if restr:
+		outurl = re.findall('<a href=\'../../../(.*?)\'>',restr[0])
+		outtitle = re.findall('.htm\'>(.*?)</a>',restr[0])
+			
+	return outtitle,outurl
+			
 ####################################
 #得到内容的函数	
 def getcontent(url):

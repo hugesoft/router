@@ -11,8 +11,11 @@
 
 {% block navbar %}
 {% endblock %}
+
 {% block body_attribs %}{% endblock %}
 {% block content %}
+
+
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">

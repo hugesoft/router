@@ -1,20 +1,3 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block title %}湖州日报手机版{% endblock %}
-
-navbar-dirbar{ height: 40px;opacity:0}
-
-{% block scripts %}
-{{ super() }}
-   <script>$(function () 
-      { $("[data-toggle='popover']").popover({html : true });
-      });
-   </script>
-   
- {% endblock %}
- 
-{% block navbar %}
 <div class="btn-group btn-group-justified navbar-fixed-bottom" role="group" aria-label="...">
   <div class="btn-group dropup" role="group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,9 +11,6 @@ navbar-dirbar{ height: 40px;opacity:0}
     </ul>
   </div>
   
-  <div class="btn-group" role="group">
-    <a href='/main/?url={{ curr_page }}' class="btn btn-primary active" role="button">版面</a>
-  </div>
   <div class="btn-group dropup" role="group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       版面
@@ -44,20 +24,6 @@ navbar-dirbar{ height: 40px;opacity:0}
   </div>
   
    <div class="btn-group" role="group">
-    <a href='/list/?url={{ curr_page }}' class="btn btn-default active" role="button">目录</a>
+    <a href={{ curr_page }} class="btn btn-default active" role="button">目录</a>
   </div>
 </div>
-{% endblock %}
-
-{% block body_attribs %}
-{% endblock %}
-
-{% block page_content %}
-{% for page_data in page_data %}
-<div class="page-content">
-	{{ page_data|safe }}
-</div>
-<br/>
-{% endfor %}
-
-{% endblock %}

@@ -21,10 +21,20 @@ class Content():
 		self.date = date
 		self.img = img
 		
-	#菜单的类		
-	class Menu():
-		name = ''
-		url = ''
-		def __init__(self,name='',url=''):
-			self.name = name
-			self.url = url
+#菜单的类		
+class Menu():
+	name = ''
+	url = ''
+	def __init__(self,name='',url=''):
+		self.name = name
+		self.url = url
+		
+#目录的类		
+class ItemList():
+	item_type = 0
+	title = ''
+	url = ''
+	def __init__(item_type,self,title='',url=''):
+		self.title = title
+		self.url = url		
+		self.item_type = item_type
