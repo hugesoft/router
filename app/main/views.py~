@@ -53,7 +53,7 @@ def indexlist():
 	#得到往期的时间
 	menu_data = getpagetime(60)
 		
-	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page = '/list/?url='+url)
+	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page = url)
 	
 ####################################
 #内容页的路由
@@ -228,7 +228,7 @@ def getpage(url,Map_id=1):
 
 	#改图大小
 	strinfo = re.compile('width=330px height=530px')
-	result = strinfo.sub('width=388px height=506px',result)
+	result = strinfo.sub('width=330px height=506px',result)
 	
 	#改map1
 	strinfo = re.compile('PagePicMap1')
@@ -237,5 +237,48 @@ def getpage(url,Map_id=1):
 	#改PagePicMap的
 	strinfo = re.compile('<img useMap=')
 	result = strinfo.sub('<img id=PagePicMap'+str(Map_id) +' useMap=',result)	
+	
+	class count_add:
+		s = 0
+		def __init__(self,s):
+			self.s = s
+	
+	a = count_add(0)
+
+#用于计算number,的数字			
+	def _add1(matched):
+ 		intStr = matched.group("number");
+ 		
+ 		if intStr:
+			intValue = int(intStr);
+			#第9位时，计数清0
+			if a.s == 9:
+				a.s = 0
+			if a.s % 2 == 0:
+				addedValue = int(round(intValue/1.17575758));		
+			else:
+			 	addedValue = int(round(intValue/1));
+	
+			a.s = a.s+1	
+			addedValueStr = str(addedValue)+',';
+		
+		return addedValueStr;
+	
+	#用于计算number’的数字	（最后一位）	
+	def _add2(matched):
+		intStr = matched.group("number");
+		
+		if intStr:
+			intValue = int(intStr);
+
+			addedValue = int(round(intValue/1));
+
+			a.s = 0
+			addedValueStr = str(addedValue)+'\'';
+		 
+		return addedValueStr; 	 
+
+	result = re.sub('(?P<number>\d+)[,]',_add1,result)	
+	result = re.sub('(?P<number>\d+)[\']',_add2,result)	
 		
 	return result
