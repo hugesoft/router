@@ -17,16 +17,8 @@
     </ul>
   </div>
   
-  <div class="btn-group dropup" role="group">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      版面
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" style="height:250px;overflow:scroll">
- 	{% for menu_data in menu_data %}
-    <li><a href={{ menu_data.url|safe }}>{{ menu_data.name  }}</a></li>
-    {% endfor %}
-    </ul>
+  <div class="btn-group" role="group">
+    <a href='/main/?url={{ curr_page }}' class="btn btn-primary active" role="button">版面</a>
   </div>
   
    <div class="btn-group" role="group">
@@ -36,6 +28,9 @@
 {% endblock %}
 
 {% block page_content %}
+<div class="page-header">
+2015年10月29日
+</div>
 <div class="list_group">
 	{% for page_data in page_data %}
 		{% if page_data.item_type == 1 %}

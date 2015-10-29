@@ -3,7 +3,26 @@
 
 {% block title %}湖州日报手机版{% endblock %}
 
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid " >
+    <div class="navbar-header  ">
+ <!--    导航按钮
+  <button type="button" aria-hidden="true" class="btn btn-default active navbar-btn glyphicon glyphicon-arrow-left" 
+      style='left:10px;' onclick="javascript:history.go(-1);">返回</button>
+  -->
+  <p class="navbar-text active glyphicon glyphicon-arrow-left" aria-hidden="true" style='font-size:16px;' onclick="javascript:history.go(-1);">
+  返回</p>
+     </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block body_attribs %}
+{% endblock %}
+
 {% block page_content %}
+body { padding-top: 70px; }
 <div class="page-header">
 {% if page_data.title %}
 <h3>{{ page_data.title|safe }}</h3>
@@ -12,19 +31,18 @@
 {% endif %}
 </div>
 
-<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
-
-
 {% if page_data.img %}
-<div class="page-content">
+<div class="page-content" >
 	{{ page_data.img|safe }}
 </div>
 <p>
 {% endif %}
 
 <div class="page-content">
+<p style='font-size:18px;font-height:1.42857143;
+font-family:...,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;'>
 {{ page_data.content|safe }}
+</p>
 </div>
 
 {% endblock %}
