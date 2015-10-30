@@ -149,7 +149,7 @@ def getPageList(url):
 	#改内容(初次)
 	restr = re.findall('<!--Right-->([\s\S]*)<!--Right End-->',output)
 	if restr:
-		restr = re.findall('title=\'(.*?)\'>A0\d',restr[0])
+		restr = re.findall('title=\'(.*?)\'>[A,B,C,D,E]0\d',restr[0])
 		
 	return restr
 
