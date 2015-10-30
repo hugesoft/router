@@ -18,7 +18,7 @@ navbar-dirbar{ height: 40px;opacity:0}
       往期
       <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" style="height:300px; width:330px;overflow:scroll;text-align:center;opacity:0.80;filter:alpha(opacity=80);">
+    <ul class="dropdown-menu" style="height:250px; width:350px;overflow:scroll;text-align:center;opacity:0.80;filter:alpha(opacity=80);">
  	{% for menu_data in menu_data %}
     <li class="list-group-item"><a href={{ menu_data.url|safe }}>{{ menu_data.name  }}</a></li>
     {% endfor %}
