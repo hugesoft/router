@@ -28,9 +28,6 @@
 {% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-2015年10月29日
-</div>
 <div class="list_group">
 	{% for page_data in page_data %}
 		{% if page_data.item_type == 1 %}

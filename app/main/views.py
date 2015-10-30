@@ -124,18 +124,22 @@ def itemslist():
 #以下为功能函数
 #
 ####################################
-
+			
 ####################################
 #得到往期的时间
 def getpagetime(days):
+	nTotal = 365
+	
 	menudata = []
 	now = datetime.now()
 	i = 0
-	while(i < 60):
+				
+	while(i < nTotal):
 		delta = timedelta(days=i)
 		n_days = now - delta
 		i = i + 1	
-		menudata.append(Menu(n_days.strftime('湖州日报 %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
+		
+		menudata.append(Menu(n_days.strftime(getWeek(n_days.weekday()) + ' %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
 	
 	return menudata
 
@@ -282,3 +286,26 @@ def getpage(url,Map_id=1):
 	result = re.sub('(?P<number>\d+)[\']',_add2,result)	
 		
 	return result
+
+#用于计算周几
+def getWeek(week):
+	strValue=''
+	
+	if 0 == week:
+		strValue = "星期日"
+	elif 1 == week:
+		strValue = "星期一"
+	elif 2 == week:
+		strValue = "星期二"
+	elif 3 == week:
+		strValue = "星期三"
+	elif 4 == week:
+		strValue = "星期四"		
+	elif 5 == week:
+		strValue = "星期五"
+	elif 6 == week:
+		strValue = "星期六"			
+								
+	return strValue
+    
+    
