@@ -128,7 +128,7 @@ def itemslist():
 ####################################
 #得到往期的时间
 def getpagetime(days):
-	nTotal = days
+	nTotal = 365
 	
 	menudata = []
 	now = datetime.now()
@@ -291,19 +291,19 @@ def getpage(url,Map_id=1):
 def getWeek(week):
 	strValue=''
 	
-	if 0 == week:
+	if 1 == week:
 		strValue = "星期日"
-	elif 1 == week:
-		strValue = "星期一"
 	elif 2 == week:
-		strValue = "星期二"
+		strValue = "星期一"
 	elif 3 == week:
-		strValue = "星期三"
+		strValue = "星期二"
 	elif 4 == week:
-		strValue = "星期四"		
+		strValue = "星期三"
 	elif 5 == week:
-		strValue = "星期五"
+		strValue = "星期四"		
 	elif 6 == week:
+		strValue = "星期五"
+	elif 0 == week:
 		strValue = "星期六"			
 								
 	return strValue

@@ -291,19 +291,19 @@ def getpage(url,Map_id=1):
 def getWeek(week):
 	strValue=''
 	
-	if 0 == week:
+	if 6 == week:
 		strValue = "星期日"
-	elif 1 == week:
+	elif 0 == week:
 		strValue = "星期一"
-	elif 2 == week:
+	elif 1 == week:
 		strValue = "星期二"
-	elif 3 == week:
+	elif 2 == week:
 		strValue = "星期三"
-	elif 4 == week:
+	elif 3 == week:
 		strValue = "星期四"		
-	elif 5 == week:
+	elif 4 == week:
 		strValue = "星期五"
-	elif 6 == week:
+	elif 5 == week:
 		strValue = "星期六"			
 								
 	return strValue
