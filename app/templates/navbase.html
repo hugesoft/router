@@ -18,7 +18,7 @@ navbar-dirbar{ height: 40px;opacity:0}
       往期
       <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" style="height:250px; width:360px;overflow:scroll;text-align:center;opacity:0.80;filter:alpha(opacity=80);">
+    <ul class="dropdown-menu" style="height:250px; width:360px;overflow:scroll;text-align:center;opacity:0.90;filter:alpha(opacity=90);">
  	{% for menu_data in menu_data %}
     <li class="list-group-item"><a href={{ menu_data.url|safe }}>{{ menu_data.name  }}</a></li>
     {% endfor %}
@@ -27,7 +27,7 @@ navbar-dirbar{ height: 40px;opacity:0}
   </div>
   
   <div class="btn-group" role="group">
-    <a href='/main/?url={{ curr_page }}' class="btn btn-primary active" role="button">版面</a>
+    <a href='{{ curr_hzrb }}?url={{ curr_page }}' class="btn btn-primary active" role="button">版面</a>
   </div>
   
    <div class="btn-group" role="group">

@@ -1,5 +1,7 @@
 #coding:utf-8
 
+import re
+
 #内容的类
 class Content():
 	title = ''
@@ -38,3 +40,14 @@ class ItemList():
 		self.title = title
 		self.url = url		
 		self.item_type = item_type
+		
+#是日报还是晚报的类
+class PageType():
+	url = '/'
+	def __init__(self,url):
+		if url =='/hzrb/':
+			self.url = 'hzrb'
+		elif url == '/hzwb/':
+			self.url = 'hzwb'	
+		elif url == '/main/':
+			self.url = 'hzrb'		

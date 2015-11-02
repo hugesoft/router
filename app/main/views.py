@@ -13,31 +13,33 @@ from .import main
 from content import Content
 from content import Menu
 from content import ItemList
+from content import PageType
 
 ####################################
 #默认的路由函数
 @main.route('/', methods=['GET', 'POST'])
+@main.route('/main/', methods=['GET', 'POST'])
 def index():
-	import sys
-	reload(sys)
-	sys.setdefaultencoding('utf8')
+	return redirect('/hzrb/')
 	
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
-	data = getpage(url)
-	
-	return render_template('index.html', page_data = data)
-
 ####################################
 #main路由函数
-@main.route('/main/', methods=['GET', 'POST'])
+@main.route('/hzrb/', methods=['GET', 'POST'])
+@main.route('/hzwb/', methods=['GET', 'POST'])
 def indexlist():
 	import sys
 	reload(sys)
 	sys.setdefaultencoding('utf8')
-	
-	curr_time = time.strftime('%Y-%m/%d')
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ curr_time + '/node_2.htm')
 		
+	#当前当前的路由（比如/hzrb/或是/hzwb/
+	cur_url = request.path 
+	#得到当前的分类（日报还是晚报）	
+	pagetype = PageType(cur_url)
+
+	curr_time = time.strftime('%Y-%m/%d')
+	url = request.args.get('url', 'http://ehzrb.hz66.com/' + pagetype.url + '/html/'+ curr_time + '/node_2.htm')
+
+	#得到当前的列表
 	data = getPageList(url)
 
 	array_data = []
@@ -47,13 +49,14 @@ def indexlist():
 	newurl =  url[:url.rindex('/')]
 	for x in data:
 		arr.append(newurl + '/node_' + str(i+2) + '.htm')
+		#得到页面内容
 		array_data.append(getpage(arr[i],i+1))
 		i=i+1
 		
 	#得到往期的时间
-	menu_data = getpagetime(60)
-		
-	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page = url)
+	menu_data = getpagetime(365,cur_url)
+	
+	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page= url,curr_hzrb=cur_url)
 	
 ####################################
 #内容页的路由
@@ -63,7 +66,12 @@ def content():
 	reload(sys)
 	sys.setdefaultencoding('utf8')
 	
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/2015-10/20/content_254527.htm')
+	#当前当前的路由（比如/hzrb/或是/hzwb/
+	cur_url = request.path 
+	#得到当前的分类（日报还是晚报）	
+	pagetype = PageType(cur_url)
+		
+	url = request.args.get('url', 'http://ehzrb.hz66.com/'+pagetype.url+'/html/2015-10/20/content_254527.htm')
 	data = getcontent(url)
 	
 	return  render_template('content.html', page_data = data)
@@ -76,7 +84,12 @@ def pagelist():
 	reload(sys)
 	sys.setdefaultencoding('utf8')
 	
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
+	#当前当前的路由（比如/hzrb/或是/hzwb/
+	cur_url = request.path 
+	#得到当前的分类（日报还是晚报）	
+	pagetype = PageType(cur_url)
+	
+	url = request.args.get('url', 'http://ehzrb.hz66.com/'+pagetype.url+'/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
 	data = getPageList(url)
 	
 	arr = []	
@@ -97,7 +110,14 @@ def itemslist():
 	reload(sys)
 	sys.setdefaultencoding('utf8')
 	
-	url = request.args.get('url', 'http://ehzrb.hz66.com/hzrb/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
+	cur_url = ''
+	str_url = request.args.get('url')
+	if str_url.find('ehzrb.hz66.com/hzrb/')>0:
+		cur_url = 'hzrb'
+	elif str_url.find('ehzrb.hz66.com/hzwb/')>0:
+		cur_url = 'hzwb'
+		
+	url = request.args.get('url', 'http://ehzrb.hz66.com/'+cur_url+'/html/'+ time.strftime('%Y-%m/%d') + '/node_2.htm')
 	data = getPageList(url)
 	
 	arr = []
@@ -106,17 +126,17 @@ def itemslist():
 	spliurl =  url[:url.rindex('/')]
 	for x in data:
 		newurl = spliurl + '/node_' + str(i) + '.htm'
-		arr.append(ItemList(1,x,'/main/?url='+newurl+'#PagePicMap'+str(i-1)))
+		arr.append(ItemList(1,x,'/'+cur_url +'/?url='+newurl+'#PagePicMap'+str(i-1)))
 		item = getItemList(newurl)	
 		for y in range(0, len(item[0])):
 			arr.append(ItemList(0,item[0][y],
-			'/content/?url=http://ehzrb.hz66.com/hzrb/'+item[1][y]))	
+			'/content/?url=http://ehzrb.hz66.com/'+cur_url+'/'+item[1][y]))	
 		i = i+1
 		
 	#得到往期的时间
-	menu_data = getpagetime(60)
+	menu_data = getpagetime(365,'/'+cur_url+'/')
 	
-	return render_template('pagelist.html', page_data = arr, menu_data = menu_data, curr_page = url)
+	return render_template('pagelist.html', page_data = arr, menu_data = menu_data, curr_page = url,curr_hzrb='/'+cur_url+'/')
 	
 
 ####################################
@@ -127,19 +147,18 @@ def itemslist():
 			
 ####################################
 #得到往期的时间
-def getpagetime(days):
-	nTotal = 365
-	
+def getpagetime(days,url):
 	menudata = []
 	now = datetime.now()
 	i = 0
-				
-	while(i < nTotal):
+					
+	while(i < days):
 		delta = timedelta(days=i)
 		n_days = now - delta
 		i = i + 1	
 		
-		menudata.append(Menu(n_days.strftime(getWeek(n_days.weekday()) + ' %Y年%m月%d日'),'/main/?url=http://ehzrb.hz66.com/hzrb/html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
+		menudata.append(Menu(n_days.strftime(getWeek(n_days.weekday()) + ' %Y年%m月%d日'),
+		url + '?url=http://ehzrb.hz66.com' + url+ 'html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
 	
 	return menudata
 
@@ -153,7 +172,7 @@ def getPageList(url):
 	#改内容(初次)
 	restr = re.findall('<!--Right-->([\s\S]*)<!--Right End-->',output)
 	if restr:
-		restr = re.findall('title=\'(.*?)\'>[A-Z]0\d',restr[0])
+		restr = re.findall('title=\'(.*?)\'>[A-Z]\d\d',restr[0])
 		
 	return restr
 
@@ -187,10 +206,18 @@ def getcontent(url):
 	strinfo = re.compile('src="../../../../')
 	result = strinfo.sub('src="http://ehzrb.hz66.com/',restr[0])
 	
+	str_img = ''
+	img_url = request.args.get('url')
+	if img_url.find('ehzrb.hz66.com/hzrb/')>0:
+		str_img = 'hzrb'
+	elif img_url.find('ehzrb.hz66.com/hzwb/')>0:
+		str_img = 'hzwb'
+		
+	print 'mmx:'+img_url
 	#改内容(第二次，得图)
-	pageimage = re.findall('hzrb([\s\S]*) border=0><table><tr>',result)
+	pageimage = re.findall(str_img+'([\s\S]*) border=0><table><tr>',result)
 	if pageimage:
-		image= '<img src="http://ehzrb.hz66.com/hzrb' + pageimage[0] + '"width = 100% border=0>'
+		image= '<img src="http://ehzrb.hz66.com/'+str_img+'/'+ pageimage[0] + '"width = 100% border=0>'
 	else:
 		image = None
 	
