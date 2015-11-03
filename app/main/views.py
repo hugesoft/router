@@ -30,12 +30,12 @@ def indexlist():
 	import sys
 	reload(sys)
 	sys.setdefaultencoding('utf8')
-		
+	
 	#当前当前的路由（比如/hzrb/或是/hzwb/
 	cur_url = request.path 
 	#得到当前的分类（日报还是晚报）	
 	pagetype = PageType(cur_url)
-
+	
 	curr_time = time.strftime('%Y-%m/%d')
 	url = request.args.get('url', 'http://ehzrb.hz66.com/' + pagetype.url + '/html/'+ curr_time + '/node_2.htm')
 
@@ -56,7 +56,8 @@ def indexlist():
 	#得到往期的时间
 	menu_data = getpagetime(365,cur_url)
 	
-	return render_template('main.html', page_data = array_data, menu_data = menu_data, curr_page= url,curr_hzrb=cur_url)
+	return render_template('main.html', page_data = array_data, menu_data = menu_data, 
+	curr_page= url,curr_hzrb=cur_url,web_title=getWebTitle(cur_url))
 	
 ####################################
 #内容页的路由
@@ -100,7 +101,7 @@ def pagelist():
 		arr.append('<a href=..?url=' + newurl + '/node_' + str(i) + '.htm>' + x + '</a>')
 		i = i+1
 
-	return render_template('pagelist.html', page_data = arr)
+	return render_template('pagelist.html', page_data = arr,web_title=getWebTitle(cur_url))
 
 ####################################	
 #版面的路由	
@@ -136,7 +137,8 @@ def itemslist():
 	#得到往期的时间
 	menu_data = getpagetime(365,'/'+cur_url+'/')
 	
-	return render_template('pagelist.html', page_data = arr, menu_data = menu_data, curr_page = url,curr_hzrb='/'+cur_url+'/')
+	return render_template('pagelist.html', page_data = arr, menu_data = menu_data, curr_page = url,
+	curr_hzrb='/'+cur_url+'/',web_title=getWebTitle('/'+cur_url+'/'))
 	
 
 ####################################
@@ -144,7 +146,16 @@ def itemslist():
 #以下为功能函数
 #
 ####################################
-			
+	
+####################################
+#得是否日报
+def getWebTitle(cur_url):	
+	if cur_url == '/hzwb/':
+		web_title = '湖州晚报手机版'
+	else:
+		web_title = '湖州日报手机版'
+	return web_title
+	
 ####################################
 #得到往期的时间
 def getpagetime(days,url):
