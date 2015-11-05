@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} {{ web_title }} {% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+var audio ;
+window.onload = function(){
+	initAudio();
+}
+var initAudio = function(){
+	//audio =  document.createElement("audio")
+	//audio.src='Never Say Good Bye.ogg'
+	audio = document.getElementById('audio');
+}
+function getCurrentTime(id){			
+	alert(parseInt(audio.currentTime) + '：秒');
+}
+ 
+function playOrPaused(id,obj){
+	if(audio.paused){
+		audio.play();
+		return;
+	}
+	audio.pause();
+}
+ 
+function hideOrShowControls(id,obj){
+	if(audio.controls){
+		audio.removeAttribute('controls');
+		obj.innerHTML = '显示控制框'
+		return;
+	}
+	audio.controls = 'controls';
+	obj.innerHTML = '隐藏控制框'
+	return;
+}
+function vol(id,type , obj){
+	if(type == 'up'){
+		var volume = audio.volume  + 0.1;
+		if(volume >=1 ){
+			volume = 1 ;
+		
+		}
+		audio.volume =  volume;
+	}else if(type == 'down'){
+		var volume = audio.volume  - 0.1;
+		if(volume <=0 ){
+			volume = 0 ;
+		}
+		audio.volume =  volume;
+	}
+	document.getElementById('nowVol').innerHTML = returnFloat1(audio.volume);
+}
+function muted(id,obj){
+	if(audio.muted){
+		audio.muted = false;
+		obj.innerHTML = '开启静音';
+	}else{
+		audio.muted = true; 
+		obj.innerHTML = '关闭静音';
+	}
+}
+ //保留一位小数点
+ 
+function returnFloat1(value) {    
+	value = Math.round(parseFloat(value) * 10) / 10;
+	if (value.toString().indexOf(".") < 0){
+		value = value.toString() + ".0";
+	}
+	return value;
+}
+</script>
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid " >
+    <div class="navbar-header  ">
+ <!--    导航按钮
+  <button type="button" aria-hidden="true" class="btn btn-default active navbar-btn glyphicon glyphicon-arrow-left" 
+      style='left:10px;' onclick="javascript:history.go(-1);">返回</button>
+  -->
+  <p class="navbar-text active glyphicon glyphicon-arrow-left" aria-hidden="true" style='left:10px;font-size:16px;' onclick="javascript:history.go(-1);">
+  返回</p>
+  
+  <a href="javascript:void(0);" onclick="playOrPaused('firefox',this);" class="navbar-text active glyphicon glyphicon-arrow-left" aria-hidden="true" style='left:10px;font-size:16px;' >读报</a>
+     </div>
+  </div>
+</nav>
+{% endblock %}
+
+{% block body_attribs %}
+{% endblock %}
+
+{% block page_content %}
+body { padding-top: 70px; }
+<div class="page-header">
+{% if page_data.title %}
+<h3>{{ page_data.title|safe }}</h3>
+{% else %}
+<h3>{{ page_data.stitle|safe }}</h3>
+{% endif %}
+</div>
+
+{% if page_data.img %}
+<div class="page-content" >
+	{{ page_data.img|safe }}
+</div>
+<p>
+{% endif %}
+
+<div class="page-content">
+<p style='font-size:18px;font-height:1.42857143;
+font-family:...,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;'>
+{{ page_data.content|safe }}
+</p>
+</div>
+<audio src="data:audio/x-wav;base64,{{ tts_data }}" id="audio" controls="controls" ></audio>
+{% endblock %}

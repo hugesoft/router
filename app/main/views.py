@@ -3,10 +3,10 @@ from datetime import datetime
 from flask import render_template, session, redirect, url_for, request
 import urllib2
 import urllib
+import  json
 import re
 import time
 from datetime import datetime, timedelta
-
 from array import *
 
 from .import main
@@ -14,6 +14,7 @@ from content import Content
 from content import Menu
 from content import ItemList
 from content import PageType
+from HTMLParser import HTMLParser
 
 ####################################
 #默认的路由函数
@@ -77,6 +78,25 @@ def content():
 	
 	return  render_template('content.html', page_data = data)
 
+####################################
+#内容页的路由
+@main.route('/content2/', methods=['GET', 'POST'])
+def content_TTS():
+	import sys
+	reload(sys)
+	sys.setdefaultencoding('utf8')
+	
+	#当前当前的路由（比如/hzrb/或是/hzwb/
+	cur_url = request.path 
+	#得到当前的分类（日报还是晚报）	
+	pagetype = PageType(cur_url)
+		
+	url = request.args.get('url', 'http://ehzrb.hz66.com/'+pagetype.url+'/html/2015-10/20/content_254527.htm')
+	data = getcontent(url)
+	
+	tts_data = getTTS(data.content)
+	
+	return  render_template('content_TTS.html', page_data = data,tts_data=tts_data)
 ####################################	
 #版面的路由	
 @main.route('/page/', methods=['GET', 'POST'])
@@ -146,7 +166,45 @@ def itemslist():
 #以下为功能函数
 #
 ####################################
+    
+def my_urlencode(str1):
+	reprStr = repr(str1).replace(r'\x', '%')
+	return reprStr[1:-1]
 	
+def clearWord(str1):
+	d = re.sub('[&nbsp;]+','',str1)
+	d = re.sub('<[^>]+>','',d)	
+	d = re.sub('▲▲+','',d)	
+	
+	p=re.compile('\s+')
+	str_var=re.sub(p,'',d) 
+
+	return str_var
+	
+####################################
+#为逼格
+#TTS 
+def getTTS(txt):	
+	char_len = 9
+	max_len = char_len * 800
+	
+	clearTxt = clearWord(txt)
+	str_total= my_urlencode(clearTxt )
+
+	cur_len = len(str_total)
+	str_value = ''
+
+	url = 'http://apis.baidu.com/apistore/baidutts/tts?text='+str_total[0:max_len]+'&ctp=1&per=0'
+	req = urllib2.Request(url)
+	req.add_header("apikey", "a72db0e04b98e6e86481fc5424f85078")
+	resp = urllib2.urlopen(req)
+	content = resp.read()
+	if(content):
+		s = json.loads(content)
+		str_value  += str(s['retData'])
+		
+		return str_value
+		
 ####################################
 #得是否日报
 def getWebTitle(cur_url):	
@@ -166,7 +224,7 @@ def getpagetime(days,url):
 	while(i < days):
 		delta = timedelta(days=i)
 		n_days = now - delta
-		i = i + 1	
+		i +=1
 		
 		menudata.append(Menu(n_days.strftime(getWeek(n_days.weekday()) + ' %Y年%m月%d日'),
 		url + '?url=http://ehzrb.hz66.com' + url+ 'html/'+ n_days.strftime('%Y-%m/%d') + '/node_2.htm'))
@@ -224,7 +282,6 @@ def getcontent(url):
 	elif img_url.find('ehzrb.hz66.com/hzwb/')>0:
 		str_img = 'hzwb'
 		
-	print 'mmx:'+img_url
 	#改内容(第二次，得图)
 	pageimage = re.findall(str_img+'([\s\S]*) border=0><table><tr>',result)
 	if pageimage:
