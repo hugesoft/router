@@ -53,8 +53,7 @@ def index():
 		#改图	
 		output = re.sub( 'http://img.zjolcdn.com/pic/0/07/11/20/7112062_442059.png+','http://zt.hz66.com/mmx/img/20151106/media.png',output)
 		output = re.sub( 'http://img.zjolcdn.com/pic/0/07/11/20/7112070_823120.png+','http://zt.hz66.com/mmx/img/20151106/logo.png',output)
-	
-		http://img.zjolcdn.com/pic/0/07/11/20/7112062_442059.png"></img>
+
 	return output	
 	
 def getZT(url):
